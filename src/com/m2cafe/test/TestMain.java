@@ -21,11 +21,34 @@ public class TestMain {
 		switch(choice)
 		{
 		case 1:
+			String name=null;
+			long mobile=0;
 			userDao=new UserDao();
+			do
+			{
 			System.out.println("Enter user Name:");
-			String name=scan.nextLine();
+			name=scan.nextLine();
+			if(name.isEmpty())
+			{
+				System.out.println("name can't be empty");
+			}
+			}while(name.isEmpty());
+			String tempMobile=null;
+			do
+			{
 			System.out.println("Enter mobile number:");
-			long mobile=Long.parseLong(scan.nextLine());
+			tempMobile=scan.nextLine();
+			if(!tempMobile.matches("[0-9]{10}"))
+			{
+				System.out.println("mobile number must have 10 digits");
+			}
+			if(tempMobile.isEmpty())
+			{
+				System.out.println("Mobile number cant be empty");
+			}
+			}while(!tempMobile.matches("[0-9]{10}"));
+			mobile=Long.parseLong(tempMobile);
+			
 			User user=new User(name, mobile);
 			userDao.inserUser(user);
 		case 2:

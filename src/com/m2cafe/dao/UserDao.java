@@ -14,7 +14,6 @@ public class UserDao {
 	
 	public void inserUser(User user) {
 		String insertQuery = "insert into user_cafe(user_name,mobile_number) values(?,?)";
-
 		ConnectionUtil conUtil = new ConnectionUtil();
 		Connection con = conUtil.getDbConnection();
 		PreparedStatement pstmt = null;
