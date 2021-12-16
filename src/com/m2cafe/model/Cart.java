@@ -8,7 +8,20 @@ public class Cart {
 	private User user;
 	private int quantity;
 	private double totalPrice;
+	private String status;
 	
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Products getProduct() {
 		return product;
 	}

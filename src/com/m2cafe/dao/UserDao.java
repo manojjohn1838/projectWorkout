@@ -70,6 +70,26 @@ public class UserDao {
 		
 		return userList;
 	}
-	
+	public static int findUserId(User user)
+	{
+		String findUserID="select id from user_cafe where mobile_number= '"+user.getMobile()+"'";
+		Connection con=ConnectionUtil.getDbConnection();
+		Statement stmt;
+		int userId=0;
+		try {
+			stmt = con.createStatement();
+			ResultSet rs=stmt.executeQuery(findUserID);
+			if(rs.next())
+			{
+			userId=rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return userId;
+		
+	}
 
 }

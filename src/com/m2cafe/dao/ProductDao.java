@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.m2cafe.model.Products;
+import com.m2cafe.model.User;
 
 public class ProductDao {
 	
@@ -33,5 +34,27 @@ public class ProductDao {
 		
 		return productsList;
 	}
+	public static int findProductId(Products product)
+	{
+		String findUserID="select id from products_cafe where mobile_number= '"+product.getName()+"'";
+		Connection con=ConnectionUtil.getDbConnection();
+		Statement stmt;
+		int productId=0;
+		try {
+			stmt = con.createStatement();
+			ResultSet rs=stmt.executeQuery(findUserID);
+			if(rs.next())
+			{
+			productId=rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return productId;
+		
+	}
+
 
 }

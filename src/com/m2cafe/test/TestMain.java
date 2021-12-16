@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.m2cafe.dao.OrderDao;
 import com.m2cafe.dao.ProductDao;
 import com.m2cafe.dao.UserDao;
+import com.m2cafe.model.Cart;
 import com.m2cafe.model.Products;
 import com.m2cafe.model.User;
 
@@ -57,12 +58,15 @@ public class TestMain {
 			System.out.println("Enter the registered mobile number");
 			long mobileNo=Long.parseLong(scan.nextLine());
 			User currentUser=userDao.validateUser(mobileNo);
+			int userChoice=1;
+			do
+			{
 			if(currentUser!=null)
 			{
 			System.out.println("Welcome "+currentUser.getName());
 			System.out.println("\n1.show products\n2.show orders\n3.update order\n4.Cancel order");
-			int userChoice=Integer.parseInt(scan.nextLine());
-			
+			userChoice=Integer.parseInt(scan.nextLine());
+			OrderDao orderDao=new OrderDao();
 			switch(userChoice)
 			{
 			case 1:
@@ -73,11 +77,20 @@ public class TestMain {
 					System.out.println(lProducts.get(i));
 					
 				}
-				System.out.println("\n1.Order Product\n");
+				System.out.println("\n1.Order Product\n2.View Orders");
 				int orderChoice=Integer.parseInt(scan.nextLine());
 				Products product=null;
-				if(orderChoice==1)
+				String userFalg=null;
+				switch(orderChoice)
 				{	
+				case 1:
+					do
+					{
+						for(int i=0;i<lProducts.size();i++)
+						{
+							System.out.println(lProducts.get(i));
+							
+						}
 					System.out.println("Enter the Product Name:");
 					String proName=scan.nextLine();
 					for(int i=0;i<lProducts.size();i++)
@@ -86,24 +99,33 @@ public class TestMain {
 						{
 							product=lProducts.get(i);
 						}
-						
 					}
 					System.out.println("enter no of Products Needed");
 					int noOf=Integer.parseInt(scan.nextLine());
-					OrderDao orderDao=new OrderDao();
+					
 					orderDao.insertOrder(product,currentUser,noOf);
 					
-				}
+				
+					System.out.println("do you want to buy more products(y/n)");
+					userFalg=scan.nextLine();
+				}while(userFalg.charAt(0)=='y');
 				break;
+			case 2:
+				System.out.println("Orders from You");
+				List<Cart> userCartList=orderDao.viewUserCart(currentUser,product);
+				System.out.println(userCartList);
 				default:
 					System.out.println("Invalid choice");
 			}
-			
 			}
+			}
+			
+			
 			else
 			{
 				System.out.println("Not a registered mobile number");
 			}
+			}while(userChoice<5);
 			break;
 		case 3:
 			break;
