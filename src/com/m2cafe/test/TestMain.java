@@ -52,72 +52,86 @@ public class TestMain {
 			
 			User user=new User(name, mobile);
 			userDao.inserUser(user);
+			
 		case 2:
 			userDao=new UserDao();
 			System.out.println("User Login");
 			System.out.println("Enter the registered mobile number");
 			long mobileNo=Long.parseLong(scan.nextLine());
 			User currentUser=userDao.validateUser(mobileNo);
-			int userChoice=1;
+			int userChoice=0;
 			do
 			{
 			if(currentUser!=null)
 			{
 			System.out.println("Welcome "+currentUser.getName());
+			String userFlagChoice=null;
+			do
+			{
 			System.out.println("\n1.show products\n2.show orders\n3.update order\n4.Cancel order");
 			userChoice=Integer.parseInt(scan.nextLine());
 			OrderDao orderDao=new OrderDao();
-			switch(userChoice)
-			{
-			case 1:
-				ProductDao proDao=new ProductDao();
-				List<Products> lProducts=proDao.showProduct();
-				for(int i=0;i<lProducts.size();i++)
+				switch(userChoice)
 				{
-					System.out.println(lProducts.get(i));
-					
-				}
-				System.out.println("\n1.Order Product\n2.View Orders");
-				int orderChoice=Integer.parseInt(scan.nextLine());
-				Products product=null;
-				String userFalg=null;
-				switch(orderChoice)
-				{	
 				case 1:
+					ProductDao proDao=new ProductDao();
+					List<Products> ProductsList=proDao.showProduct();
+					for(int i=0;i<ProductsList.size();i++)
+					{
+						System.out.println(ProductsList.get(i));
+						
+					}
+					int orderChoice=10;
 					do
 					{
-						for(int i=0;i<lProducts.size();i++)
-						{
-							System.out.println(lProducts.get(i));
+					System.out.println("\n1.Order Product\n2.show cart");
+					orderChoice=Integer.parseInt(scan.nextLine());
+					Products product=null;
+					String userFalg=null;
+						switch(orderChoice)
+						{	
+						case 1:
 							
+							do
+							{
+							System.out.println("\nEnter the Product Name:");
+							String proName=scan.nextLine();
+							for(int i=0;i<ProductsList.size();i++)
+							{
+								if(ProductsList.get(i).getName().equals(proName))
+								{
+									product=ProductsList.get(i);
+								}
+							}
+							System.out.println(product);
+							System.out.println("\nEnter no of Products Needed");
+							int noOf=Integer.parseInt(scan.nextLine());
+							
+							orderDao.insertOrder(product,currentUser,noOf);
+							
+						
+							System.out.println("\ndo you want to buy more products(y/n)");
+							userFalg=scan.nextLine();
+						}while(userFalg.charAt(0)=='y');
+						break;
+						case 2:
+							System.out.println("Orders from You");
+							List<Cart> userCartList=orderDao.viewUserCart(currentUser);
+							System.out.println(userCartList);
+							break;
 						}
-					System.out.println("Enter the Product Name:");
-					String proName=scan.nextLine();
-					for(int i=0;i<lProducts.size();i++)
-					{
-						if(lProducts.get(i).getName().equals(proName))
-						{
-							product=lProducts.get(i);
-						}
-					}
-					System.out.println("enter no of Products Needed");
-					int noOf=Integer.parseInt(scan.nextLine());
-					
-					orderDao.insertOrder(product,currentUser,noOf);
-					
+						}while(orderChoice<3);
+						break;
+				case 2:
+					System.out.println("Orders in cart");
+					List<Cart> CartList=orderDao.viewCart(currentUser);
+					System.out.println(CartList.get(0));
+					break;
+				}
+				System.out.println("Do you want to continue or Logout ..(y/n)");
+				userFlagChoice=scan.nextLine();
+			}while(userFlagChoice.charAt(0)=='y');
 				
-					System.out.println("do you want to buy more products(y/n)");
-					userFalg=scan.nextLine();
-				}while(userFalg.charAt(0)=='y');
-				break;
-			case 2:
-				System.out.println("Orders from You");
-				List<Cart> userCartList=orderDao.viewUserCart(currentUser,product);
-				System.out.println(userCartList);
-				default:
-					System.out.println("Invalid choice");
-			}
-			}
 			}
 			
 			

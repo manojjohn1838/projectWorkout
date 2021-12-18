@@ -74,6 +74,11 @@ public class Cart {
 				&& Objects.equals(product, other.product) && quantity == other.quantity
 				&& Objects.equals(user, other.user);
 	}
+	@Override
+	public String toString() {
+		return "\nproduct=" + product + "\nuser=" + user + "\nquantity=" + quantity + "\ntotalPrice=" + totalPrice
+				+ "\nstatus=" + status ;
+	}
 	
 	
 
